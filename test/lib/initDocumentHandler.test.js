@@ -1,7 +1,7 @@
 const documentHandler = require('../../lib/middleware/documentHandlerMiddleware');
 const initDocumentHandler = require('../../lib/initDocumentHandler');
 const { expect, sinon } = require('../chai');
-const config = require('config');
+const config = require('../../config');
 const request = require('request');
 
 describe('lib/initDocumentHandler', () => {

@@ -1,6 +1,6 @@
 const createUris = require('../../lib/createUris');
 const { expect } = require('../chai');
-const config = require('config');
+const config = require('../../config');
 
 const THREE = 3;
 
