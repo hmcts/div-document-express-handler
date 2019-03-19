@@ -4,7 +4,6 @@
   "description": "A module to assist serving documents to the public",
   "main": "index.js",
   "repository": "https://github.com/hmcts/div-document-express-handler.git",
-  "author": "Dominic Taylor <dom.taylor7@gmail.com>",
   "license": "MIT",
   "scripts": {
     "coverage": "nyc report --reporter=text-lcov | tee coverage.lcov | codacy-coverage",
