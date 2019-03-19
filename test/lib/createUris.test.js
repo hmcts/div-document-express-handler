@@ -11,23 +11,24 @@ describe('lib/createUris', () => {
       const files = [
         {
           id: 'id1',
-          value: { DocumentFileName: 'filename1234567890' }
+          value: { DocumentFileName: 'filename1234567890.pdf' }
         }, {
           id: 'id2',
-          value: { DocumentFileName: 'filename!@£$%^&*(' }
+          value: { DocumentFileName: 'filename!@£$%^&*(.jpg' }
         }, {
           id: 'id3',
-          value: { DocumentFileName: 'filename_+":?|}{><' }
+          value: { DocumentFileName: 'filename_+":?|}{><.doc' }
         }
       ];
       results = createUris(files);
     });
 
-    it('returns a list urls and types', () => {
+    it('returns a list urls, types, file extension', () => {
       expect(results.length).to.eql(THREE);
       results.forEach(result => {
         expect(result.hasOwnProperty('uri'));
         expect(result.hasOwnProperty('type'));
+        expect(result.hasOwnProperty('fileType'));
       });
     });
 
@@ -42,6 +43,12 @@ describe('lib/createUris', () => {
         const uri = config.defaultArgs.uri.replace(':documentId', `id${index + 1}`);
         expect(result.uri).to.eql(uri);
       });
+    });
+
+    it('parses the correct file type', () => {
+      expect(results[0].fileType).to.eql('PDF');
+      expect(results[1].fileType).to.eql('JPG');
+      expect(results[2].fileType).to.eql('DOC');
     });
   });
 
