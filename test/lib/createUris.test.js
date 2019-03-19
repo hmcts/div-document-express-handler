@@ -17,7 +17,7 @@ describe('lib/createUris', () => {
           value: { DocumentFileName: 'filename!@£$%^&*(.jpg' }
         }, {
           id: 'id3',
-          value: { DocumentFileName: 'filename_+":?|}{><.doc' }
+          value: { DocumentFileName: 'filename_+":?|}{><.mp3' }
         }
       ];
       results = createUris(files);
@@ -46,9 +46,9 @@ describe('lib/createUris', () => {
     });
 
     it('parses the correct file type', () => {
-      expect(results[0].fileType).to.eql('PDF');
-      expect(results[1].fileType).to.eql('JPG');
-      expect(results[2].fileType).to.eql('DOC');
+      expect(results[0].fileType).to.eql('pdf');
+      expect(results[1].fileType).to.eql('jpg');
+      expect(results[2].fileType).to.eql('mp3');
     });
   });
 
