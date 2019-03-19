@@ -70,8 +70,19 @@ template.html:
 ```HTML
 {% from "look-and-feel/components/document-list.njk" import documentList %}
 
+<h3 class="heading-small" id="subsection-title">Download your documents</h3>
+
 {{ documentList(downloadableFiles, content.files) }}
 ```
+main.scss:
+```SCSS
+@import 'look-and-feel/all';
+```
+or to import specific styles for document-list
+```SCSS
+@import 'look-and-feel/document-list';
+```
+
 content.json:
 ```JSON
   {
