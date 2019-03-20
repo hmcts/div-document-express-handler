@@ -1,0 +1,17 @@
+language: node_js
+node_js:
+- '8'
+cache: yarn
+script:
+- yarn --version
+- yarn check --integrity
+- yarn test
+
+deploy:
+  provider: npm
+  email: jenkins-reform@HMCTS.NET
+  api_key:
+    secure: fxkxOUlVlun5T3Aiv3N/7S73C9bkid8cRgFWnFj7zi8ZNSFDbGzWCmrD8p8Lfms7OMIiQk3eM+YBgYqaZ0yV9O6o8XuR8s4RHbB4oOlY1OZRwTJuNLkbKkzJK9NETwue4sPCMsp1lvOrJaRBJVkCTta9UdhR62pAsb3N+GR9OjESaLzGDhaJJXCFOPTDCMRYs39X7nSemOE0d6G5kEf2XUn2kdQXDZVBwG4XoEUJHvLdIM3GTU3e/15AxdgmaPENxccEGsrLM/ztV66mk+RA+DIvm52k4eDS+NAvHsPAO0uMDmG7OSjTv7UGJr8Ahr74GU3ZnQohSnwKdpnjvcEIjpjzsOmeNsgmP7tcvgM9EPECQMnAMgUiv2TLOW8P4v/9pComzlsHMovwDnKlyGS6yxt9Rqea3j+fhQhmkWdAmbawImGa/o3rY72dFk9k1phJ0m6LL0stTS4cbYHX4TpIhkoDll1KeWz18BXp9JSF0aVnyrdkxC5zcf4awNR8OfGPpqr5AJ9ZaMoOlwZf4zbMtabsEgzvUsAEqM81+iGz2nIlm/Rx7mTbL/NWMFV4Ju4XpDMfgPsWdYHOQA3Sw1rXL0F+7KGNY+2qw9c6TXmwHQgIu/5LqkxyQLAxM7G4/Km7Pt+B4QsJFXEJ64wAKYKmz6d6YSXSblJD1yYlblTOxt0=
+  on:
+    tags: true
+    repo: hmcts/div-document-express-handler
