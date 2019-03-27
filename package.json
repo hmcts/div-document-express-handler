@@ -1,6 +1,6 @@
 {
   "name": "@hmcts/div-document-express-handler",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "A module to assist serving documents to the public",
   "main": "index.js",
   "repository": "https://github.com/hmcts/div-document-express-handler.git",
