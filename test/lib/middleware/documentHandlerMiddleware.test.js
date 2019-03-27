@@ -5,10 +5,14 @@ const { expect } = require('../../chai');
 
 describe('lib/middleware/documentHandlerMiddleware', () => {
   let pipe = {};
+  let get = {};
 
   before(() => {
     pipe = sinon.stub();
-    sinon.stub(request, 'get').returns({ pipe });
+    get = { pipe };
+    get.on = sinon.stub().returns(get);
+
+    sinon.stub(request, 'get').returns(get);
   });
 
   after(() => {
@@ -78,6 +82,22 @@ describe('lib/middleware/documentHandlerMiddleware', () => {
       };
 
       expect(shouldThrowError).throws('Document handler requires a document service url to retrieve the documents from');
+    });
+
+    it('parses error to next if request fails', () => {
+      const req = {
+        params: { documentId: '123' },
+        cookies: { '__auth-token': 'some-token' }
+      };
+      const res = sinon.stub();
+      const next = sinon.stub();
+
+      const options = { documentServiceUrl: 'http://localhost9000' };
+      const handler = documentHandlerMiddleware(options);
+
+      handler(req, res, next);
+
+      expect(get.on.calledWith('error', next)).to.eql(true);
     });
   });
 });
