@@ -47,7 +47,9 @@ describe('lib/initDocumentHandler', () => {
     });
 
     it('attaches any middlware passed', () => {
-      sinon.stub(request, 'get').returns({ pipe: sinon.stub() });
+      const get = { pipe: sinon.stub() };
+      get.on = sinon.stub().returns(get);
+      sinon.stub(request, 'get').returns(get);
 
       const req = {
         params: { documentId: '123' },
