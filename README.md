@@ -23,7 +23,11 @@ const args = {
   // string to specifiy auth token cookie, default: '__auth-token' *optional*
   authorizationTokenCookieName: '__auth-token',
   // string to specify the service to fetch the documents from *required*
-  documentServiceUrl: 'service-url'
+  documentServiceUrl: 'service-url',
+  // array to paths where file collections are stored *required*
+  // this is used to get the file id from the session given the file name. all downloadable
+  // files must be included in these paths
+  sessionFileCollectionsPaths: ['case.data.d8', 'files']
 };
 initDocumentHandler(app, middleware, args);
 ```

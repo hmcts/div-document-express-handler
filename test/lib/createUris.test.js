@@ -7,8 +7,9 @@ const THREE = 3;
 describe('lib/createUris', () => {
   describe('type and url', () => {
     let results = {};
+    let files = [];
     before(() => {
-      const files = [
+      files = [
         {
           id: 'id1',
           value: { DocumentFileName: 'filename1234567890.pdf' }
@@ -40,7 +41,7 @@ describe('lib/createUris', () => {
 
     it('creates a url to access file', () => {
       results.forEach((result, index) => {
-        const uri = config.defaultArgs.uri.replace(':documentId', `id${index + 1}`);
+        const uri = config.defaultArgs.uri.replace(':documentName', `${files[index].value.DocumentFileName}`);
         expect(result.uri).to.eql(uri);
       });
     });
@@ -61,21 +62,24 @@ describe('lib/createUris', () => {
       }
     ];
     const args = {
-      fileNamePath: 'name',
-      uri: '/a/different/path/to/file/:documentId'
+      documentNamePath: 'name',
+      uri: '/a/different/path/to/file/:documentName'
     };
 
-    before(() => {
-      results = createUris(files, args);
-    });
-
     it('used custom uri to generate file uri', () => {
-      const uri = args.uri.replace(':documentId', 'id1');
+      results = createUris(files, args);
+      const uri = args.uri.replace(':documentName', `${files[0].name}`);
       expect(results[0].uri).to.eql(uri);
     });
 
-    it('used custom fileNamePath to get filename', () => {
+    it('used custom documentNamePath to get filename', () => {
+      results = createUris(files, args);
       expect(results[0].type).to.eql('filename');
+    });
+
+    it('handles when no files or arguments parsed', () => {
+      results = createUris();
+      expect(results.length).to.eql(0);
     });
   });
 
