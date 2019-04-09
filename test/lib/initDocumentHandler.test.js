@@ -10,7 +10,10 @@ describe('lib/initDocumentHandler', () => {
     const middleware = sinon.stub();
 
     before(() => {
-      initDocumentHandler(app, [ middleware ], { documentServiceUrl: 'http://localhost9000' });
+      initDocumentHandler(app, [ middleware ], {
+        documentServiceUrl: 'http://localhost9000',
+        sessionFileCollectionsPaths: ['files']
+      });
     });
 
     it('attaches a route to the express app', () => {
@@ -32,9 +35,10 @@ describe('lib/initDocumentHandler', () => {
   describe('config', () => {
     const app = { use: sinon.stub() };
     const args = {
-      uri: '/custom/url/for/documents/:documentId',
+      uri: '/custom/url/for/documents/:documentName',
       authorizationTokenCookieName: '__custom-cookie-name',
-      documentServiceUrl: 'some/url'
+      documentServiceUrl: 'some/url',
+      sessionFileCollectionsPaths: ['files']
     };
 
     before(() => {
@@ -52,8 +56,16 @@ describe('lib/initDocumentHandler', () => {
       sinon.stub(request, 'get').returns(get);
 
       const req = {
-        params: { documentId: '123' },
-        cookies: { '__custom-cookie-name': 'the-auth-token' }
+        params: { documentName: 'file-name' },
+        cookies: { '__custom-cookie-name': 'the-auth-token' },
+        session: {
+          files: [
+            {
+              id: 'id1',
+              value: { DocumentFileName: 'file-name' }
+            }
+          ]
+        }
       };
       const res = sinon.stub();
       const handler = app.use.firstCall.args[2];
@@ -67,21 +79,30 @@ describe('lib/initDocumentHandler', () => {
   });
 
   describe('errors', () => {
-    it('throws error if app.use not available', () => {
+    it('throws error if sessionFileCollectionsPaths not configured properly', () => {
       const shouldThrowError = () => {
         initDocumentHandler();
+      };
+
+      expect(shouldThrowError).throws('Document handler sessionFileCollectionsPaths must be included in configuration');
+    });
+
+    it('throws error if app.use not available', () => {
+      const app = {};
+      const shouldThrowError = () => {
+        initDocumentHandler(app, [], { sessionFileCollectionsPaths: ['files'], uri: '/some/:documentName' });
       };
 
       expect(shouldThrowError).throws('Document handler first argument must be an express `app`');
     });
 
-    it('throws error if documentHandlerOptions does not include `:documentId` param', () => {
+    it('throws error if documentHandlerOptions does not include `:documentName` param', () => {
       const app = { use: sinon.stub() };
       const shouldThrowError = () => {
-        initDocumentHandler(app, [], { uri: '/some/url' });
+        initDocumentHandler(app, [], { uri: '/some/url', sessionFileCollectionsPaths: ['files'] });
       };
 
-      expect(shouldThrowError).throws('Document handler uri must include `:documentId` param');
+      expect(shouldThrowError).throws('Document handler uri must include `:documentName` param');
     });
   });
 });
