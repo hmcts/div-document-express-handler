@@ -20,6 +20,8 @@ const middleware = [ idam.protect() ];
 const args = {
   // string to define path to attach document donwload handler, default: '/document-download/:documentId' *optional*
   uri: '/document-download/:documentId',
+  // only allow files that include the following strings *optional*
+  filterDocuments: ['fileName1IncludesString', 'fileName2IncludesString'],
   // string to specifiy auth token cookie, default: '__auth-token' *optional*
   authorizationTokenCookieName: '__auth-token',
   // string to specify the service to fetch the documents from *required*
@@ -47,20 +49,22 @@ class Step extends Page {
   get downloadableFiles() {
     const args = {
       // string to define uri where document donwload handler is attached, default: '/document-download/:documentId' *optional*
-      uri: 'some-url'
+      uri: 'some-url',
+      // only allow files that include the following strings *optional*
+      filterDocuments: ['someOtherFile']
     };
     // The first argument is an array of files expected the following format:
     // this.req.session.files = [
     //   {
     //     "id": "401ab79e-34cb-4570-9f2f-4cf9357dc1ec",
     //     "value": {
-    //       "DocumentFileName" : "aosinvitation1552043698652633"
+    //       "DocumentFileName" : "someOtherFile1552043698652633"
     //     }
     //   },
     //   {
     //     "id": "401ab79e-34cb-4570-9f2f-4cf9357dc1ec",
     //     "value": {
-    //       "DocumentFileName" : "aosinvitation1552043698652633"
+    //       "DocumentFileName" : "someFile1552043698652633"
     //     }
     //   }
     // ]
