@@ -55,16 +55,25 @@ describe('lib/createUris', () => {
 
   describe('config', () => {
     let results = {};
-    const files = [
-      {
-        id: 'id1',
-        name: 'filename_+":?|}{><'
-      }
-    ];
-    const args = {
-      documentNamePath: 'name',
-      uri: '/a/different/path/to/file/:documentName'
-    };
+    let files = [];
+    let args = {};
+
+    beforeEach(() => {
+      files = [
+        {
+          id: 'id1',
+          name: 'filenameone_+":?|}{><'
+        },
+        {
+          id: 'id2',
+          name: 'filenametwo_+":?|}{><'
+        }
+      ];
+      args = {
+        documentNamePath: 'name',
+        uri: '/a/different/path/to/file/:documentName'
+      };
+    });
 
     it('used custom uri to generate file uri', () => {
       results = createUris(files, args);
@@ -74,12 +83,19 @@ describe('lib/createUris', () => {
 
     it('used custom documentNamePath to get filename', () => {
       results = createUris(files, args);
-      expect(results[0].type).to.eql('filename');
+      expect(results[0].type).to.eql('filenameone');
     });
 
     it('handles when no files or arguments parsed', () => {
       results = createUris();
       expect(results.length).to.eql(0);
+    });
+
+    it('filters out files', () => {
+      args.filterDocuments = ['filenametwo'];
+      results = createUris(files, args);
+      expect(results.length).to.eql(1);
+      expect(results[0].type).to.eql('filenametwo');
     });
   });
 
