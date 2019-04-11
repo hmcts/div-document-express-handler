@@ -18,12 +18,12 @@ const files = [
 ];
 
 describe('lib/helpers/applyDocumentFilter', () => {
-  it('filters documents if filterDocuments option supplied', () => {
+  it('filters documents if documentWhiteList option supplied', () => {
     const options = Object.assign(
       {},
       config.documentHandlerDefaultArgs,
       config.defaultArgs,
-      { filterDocuments: ['document-one', 'document-three'] }
+      { documentWhiteList: ['document-one', 'document-three'] }
     );
 
     const filteredFiles = applyDocumentFilter(options, files);
@@ -31,7 +31,7 @@ describe('lib/helpers/applyDocumentFilter', () => {
     expect(filteredFiles).to.eql([files[0], files[2]]);
   });
 
-  it('doesnt filter documents if no filterDocuments supplied', () => {
+  it('doesnt filter documents if no documentWhiteList supplied', () => {
     const options = Object.assign(
       {},
       config.documentHandlerDefaultArgs,

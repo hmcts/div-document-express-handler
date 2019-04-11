@@ -92,7 +92,7 @@ describe('lib/createUris', () => {
     });
 
     it('filters out files', () => {
-      args.filterDocuments = ['filenametwo'];
+      args.documentWhiteList = ['filenametwo'];
       results = createUris(files, args);
       expect(results.length).to.eql(1);
       expect(results[0].type).to.eql('filenametwo');
