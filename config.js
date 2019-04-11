@@ -2,7 +2,7 @@ module.exports = {
   defaultArgs: {
     uri: '/document-download/:documentName',
     documentNamePath: 'value.DocumentFileName',
-    filterDocuments: []
+    documentWhiteList: []
   },
   documentHandlerDefaultArgs: { authorizationTokenCookieName: '__auth-token' },
   createUrisDefaultArgs: {}

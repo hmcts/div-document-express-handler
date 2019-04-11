@@ -174,10 +174,46 @@ describe('lib/middleware/documentHandlerMiddleware', () => {
         .to.include(options.documentServiceUrl);
     });
 
-    describe('only allows user to get files defined in filter', () => {
+    describe('only allows user to get files defined in documentWhiteList', () => {
       let handler = {};
       beforeEach(() => {
-        options.filterDocuments = ['file-two', 'file-three'];
+        options.documentWhiteList = ['file-two', 'file-three'];
+        handler = documentHandlerMiddleware(options);
+      });
+
+      it('file-one', () => {
+        req.params.documentName = 'file-one';
+        const next = sinon.stub();
+        handler(req, res, next);
+
+        expect(next.calledOnce).to.eql(true);
+      });
+
+      it('file-two', () => {
+        req.params.documentName = 'file-two';
+        const next = sinon.stub();
+        handler(req, res, next);
+
+        const path = `${options.documentServiceUrl}/${req.session.files[1].id}`;
+        expect(request.get).calledWith(path);
+      });
+
+      it('file-two', () => {
+        req.params.documentName = 'file-three';
+        const next = sinon.stub();
+        handler(req, res, next);
+
+        const path = `${options.documentServiceUrl}/${req.session.files[2].id}`;
+        expect(request.get).calledWith(path);
+      });
+    });
+
+    describe('only allows user to get files defined in documentWhiteList as function', () => {
+      let handler = {};
+      beforeEach(() => {
+        options.documentWhiteList = () => {
+          return ['file-two', 'file-three'];
+        };
         handler = documentHandlerMiddleware(options);
       });
 
@@ -277,7 +313,7 @@ describe('lib/middleware/documentHandlerMiddleware', () => {
       expect(next.calledOnce).to.eql(true);
     });
 
-    it('calls next if file not in documentFilter list', () => {
+    it('calls next if file not in documentWhiteList list', () => {
       const req = {
         params: { documentName: 'file-one' },
         cookies: { '__auth-token': 'some-token' },
@@ -305,7 +341,7 @@ describe('lib/middleware/documentHandlerMiddleware', () => {
           authorizationTokenCookieName: '__custom-token-name',
           documentServiceUrl: 'http://localhost9000',
           sessionFileCollectionsPaths: ['files'],
-          filterDocuments: ['file-two']
+          documentWhiteList: ['file-two']
         }
       );
       const handler = documentHandlerMiddleware(options);
