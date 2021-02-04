@@ -27,7 +27,7 @@
     "sonar-scanner": "^1.0.1"
   },
   "dependencies": {
-    "config": "^3.0.1",
+    "config": "^3.3.3",
     "lodash": "^4.17.11",
     "request": "^2.88.0"
   },
